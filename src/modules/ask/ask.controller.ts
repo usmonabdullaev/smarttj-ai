@@ -1,9 +1,11 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import type { AskRequest } from '@smarttj/core/ai';
 
+import { InternalAuthGuard } from '../../common/guards/internal-auth.guard.js';
 import { AskService } from './ask.service.js';
 
 @Controller('ask')
+@UseGuards(InternalAuthGuard)
 export class AskController {
   constructor(private readonly service: AskService) {}
 
