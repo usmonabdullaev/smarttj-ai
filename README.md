@@ -75,8 +75,7 @@
 
 Входящий запрос от смежного сервиса (например, `smarttj-backend`) проходит через глобальный префикс `/v1`, проверяется гардом межсервисной безопасности и направляется в провайдер выбранной LLM:
 
-```mermaid
-flowchart LR
+```
     Client[Вызывающий сервис\nнапр. smarttj-backend] -->|x-internal-token| Guard[InternalAuthGuard\nПроверка JWT HS256]
     Guard --> Controller[AskController\nPOST /v1/ask]
     Controller --> Service[AskService]
