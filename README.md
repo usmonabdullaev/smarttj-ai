@@ -75,16 +75,20 @@
 
 Входящий запрос от смежного сервиса (например, `smarttj-backend`) проходит через глобальный префикс `/v1`, проверяется гардом межсервисной безопасности и направляется в провайдер выбранной LLM:
 
-```
-    Client[Вызывающий сервис\nнапр. smarttj-backend] -->|x-internal-token| Guard[InternalAuthGuard\nПроверка JWT HS256]
-    Guard --> Controller[AskController\nPOST /v1/ask]
-    Controller --> Service[AskService]
-    Service -->|provider: GEMINI| Gemini[GeminiProvider\n@google/genai]
-    Service -->|provider: OPENAI| OpenAI[OpenAIProvider\nopenai SDK]
-    Service -->|provider: GROQ| Groq[GroqProvider\ngroq-sdk]
-    Gemini --> Result[Ответ { data: string }]
+```mermaid
+flowchart TD
+    Client["Вызывающий сервис<br/>напр. smarttj-backend"] -->|x-internal-token| Guard["InternalAuthGuard<br/>Проверка JWT HS256"]
+    Guard --> Controller["AskController<br/>POST /v1/ask"]
+    Controller --> Service["AskService"]
+    
+    Service -->|provider: GEMINI| Gemini["GeminiProvider<br/>@google/genai"]
+    Service -->|provider: OPENAI| OpenAI["OpenAIProvider<br/>openai SDK"]
+    Service -->|provider: GROQ| Groq["GroqProvider<br/>groq-sdk"]
+    
+    Gemini --> Result["Ответ { data: string }"]
     OpenAI --> Result
     Groq --> Result
+    
     Result --> Client
 ```
 
